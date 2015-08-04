@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Security.Principal;
 using BPrep_BL.Model;
 
+//Meaningless Change to test Github connection
 namespace BPrep.Controllers
 {
     public static class BpFunctions
