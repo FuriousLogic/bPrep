@@ -1,0 +1,124 @@
+﻿@using System.Globalization
+@using BPrep_BL.Model
+@model Prepper
+
+@{
+    ViewBag.Title = "Kits";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.ShowTipKit)
+{
+    <div id="winExplaination" title="Your Kits page">
+        <p>This page shows a list of the kits you have currently</p>
+        <p>You can create a new kit here by completing the fields at the top of the page and pressing the 'Add' button</p>
+        <p>
+            If you choose a Type, other than 'Custom', the new list will be prepopulated with a number of suggested items.
+            This is meant to be only a starting point, feel free to alter the default list however you choose.
+        </p>
+        <p>To examine the contents of one of your lists click the relevant 'edit' link</p>
+        <input id="btnDontShowAgain" type="button" value="Don't show this again" />
+    </div>
+}
+
+@*<script src="//code.jquery.com/jquery-1.10.2.js"></script>*@
+<h2>Kits</h2>
+
+<p>
+    @*    @Html.ActionLink("Create New Kit", "Create")*@
+    <table>
+        <tr>
+            <td>Kit Type</td>
+            <td>
+                <select id="ddSampleKits">
+                    <option value="0">-Custom-</option>
+                    @foreach (SampleKit sk in ViewBag.SampleKits)
+                    {
+                        <option value="@sk.Id.ToString(CultureInfo.InvariantCulture)">@sk.Name</option>
+                    }
+                </select>
+            </td>
+            <td class="subText">Each option (apart from 'Custom') will preload the new list with suggested items.  A good starting point...</td>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td><input id="txtName" type="text" /></td>
+            <td class="subText">Name to identify this particular Kit</td>
+        </tr>
+        <tr>
+            <td>Location:</td>
+            <td><input id="txtLocation" type="text" /></td>
+            <td class="subText">Quick reminder where this kit is stored</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input id="btnAdd" type="button" value="Add" onclick="btnAdd_Click()" /></td>
+            <td></td>
+        </tr>
+    </table>
+</p>
+
+<table id="tblKits" class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script language="javascript">
+    $(document).ready(function () {
+        $("#winExplaination").dialog();
+
+        $("#btnDontShowAgain").click(function() {
+            $.ajax({
+                url: "/Kit/DontShowKitTipAgain",
+                //data: { xxx: "xxx" },
+                cache: false
+            })
+            .done(function (data) {
+                $("#winExplaination").dialog('close');
+            });
+        });
+
+        populateForm();
+    });
+
+    function btnAdd_Click() {
+        var name = $("#txtName").val();
+        if (name.trim().length == 0) {
+            alert('Enter value for Name');
+            return;
+        }
+
+        var location = $("#txtLocation").val();
+        if (location.trim().length == 0) {
+            alert('Enter value for Location');
+            return;
+        }
+
+        var sampleKitId = $("#ddSampleKits").val();
+
+        $.ajax({
+            url: "/Kit/AddKit",
+            data: { name: name, location: location, sampleKitId: sampleKitId },
+        })
+        .done(function (data) { populateForm(); })
+        ;
+    }
+
+    function populateForm() {
+        $("#txtName").val("");
+        $("#txtLocation").val("");
+        $("#ddSampleKits").val("0");
+
+        $.ajax({
+            url: "/Kit/GetKits",
+            cache: false
+        })
+        .done(function (data) { $("table#tblKits tbody").html(data); });
+    }
+</script>

@@ -1,0 +1,149 @@
+﻿@model BPrep.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+@*@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {*@
+@Html.AntiForgeryToken()
+<h4>Create a new account.</h4>
+<hr />
+@Html.ValidationSummary()
+<table>
+    <tr>
+        <td><b>User Name:</b></td>
+        <td>&nbsp;</td>
+        <td><input id="txtUserName" type="text" class="form-control" /></td>
+        <td><div id="valUserName" class="errorMessage"></div></td>
+    </tr>
+    <tr>
+        <td><b>Email Address:</b></td>
+        <td>&nbsp;</td>
+        <td><input id="txtEmailAddress" type="text" class="form-control" /></td>
+        <td><div id="valEmailAddress" class="errorMessage"></div></td>
+    </tr>
+    <tr>
+        <td><b>Password:</b></td>
+        <td>&nbsp;</td>
+        <td><input id="txtPassword" type="password" class="form-control" /></td>
+        <td><div id="valPassword" class="errorMessage"></div></td>
+    </tr>
+    <tr>
+        <td><b>Confirm Password:</b></td>
+        <td>&nbsp;</td>
+        <td><input id="txtPasswordConfirm" type="password" class="form-control" /></td>
+        <td><div id="valConfirmPassword" class="errorMessage"></div></td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            <input id="btnRegister" type="button" value="Register" class="btn btn-default" onclick="btnRegister_Click()" />
+        </td>
+    </tr>
+</table>
+<div id="dvMessage" class=".RegistrationMessage"></div>
+<div id="dvThrobber" style="display: none"><img src="~/Content/Throbber.GIF" /></div>
+@*  }*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script language="javascript">
+
+    $(document).ready(function () {
+
+    });
+
+    function btnRegister_Click() {
+        $("#dvThrobber").show();
+
+        var isValid = validate();
+        if (!isValid) return;
+
+        var userName = $("#txtUserName").val();
+        var emailAddress = $("#txtEmailAddress").val();
+        var password = $("#txtPassword").val();
+
+        $.ajax({
+            url: "/Account/SendRegistration",
+            data: { userName: userName, emailAddress: emailAddress, password: password },
+        })
+        .done(function (data) {
+            if (data.length == 0) {
+                registrationSent();
+            } else {
+                registrationNotSent(data);
+            }
+        }).fail(function (xhr, textStatus, errorThrown) {
+            alert('Error Creating Prepper Account');
+            $("#dvThrobber").hide();
+        });
+        ;
+    }
+
+    function clearValidationMessages() {
+        $("#valUserName").html('');
+        $("#valEmailAddress").html('');
+        $("#valPassword").html('');
+        $("#valConfirmPassword").html('');
+    }
+
+    function clearForm() {
+        clearValidationMessages();
+        $("#txtUserName").val('');
+        $("#txtEmailAddress").val('');
+        $("#txtPassword").val('');
+        $("#txtPasswordConfirm").val('');
+    }
+
+    function registrationSent() {
+        $("#dvThrobber").hide();
+        clearForm();
+
+        $("#dvMessage").html("A Confirmation email has been sent to you.");
+    }
+
+    function registrationNotSent(data) {
+        $("#dvThrobber").hide();
+        $("#dvMessage").html('registration Not Sent [' + data + ']');
+    }
+
+    function validate() {
+        var isValid = true;
+
+        clearValidationMessages();
+
+        //User Name
+        var userName = $("#txtUserName").val();
+        if (userName.trim().length == 0) {
+            $("#valUserName").html('Enter User Name');
+            isValid = false;
+        }
+
+        //Email
+        var email = $("#txtEmailAddress").val();
+        if (email.trim().length == 0) {
+            $("#valEmailAddress").html('Enter Email Address');
+            isValid = false;
+        }
+
+        //Password
+        var password = $("#txtPassword").val();
+        if (password.trim().length < 6) {
+            $("#valPassword").html('Password must be at least 6 characters');
+            isValid = false;
+        }
+
+        //Confirm Password
+        var passwordConfirm = $("#txtPasswordConfirm").val();
+        if (passwordConfirm != password) {
+            $("#valConfirmPassword").html('Confirmation does not match password');
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+</script>

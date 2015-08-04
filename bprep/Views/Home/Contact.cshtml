@@ -1,0 +1,101 @@
+﻿@model BPrep_BL.Model.Prepper
+
+@if (Model == null)
+{
+    <input id="hdEmailAddress" type="hidden" />
+}
+else
+{
+    <input id="hdEmailAddress" type="hidden" value="@Model.Email"/>
+}
+
+<div id="winSendEmail" title="Send Email">
+    <table>
+        <tr>
+            <td>From</td>
+            <td>&nbsp;</td>
+            <td>
+                @if (Model == null)
+                {
+                    <input id="txtContactFrom" type="text" />
+                }
+                else
+                {
+                    <span id="spContactFrom">@Model.Email</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>Subject</td>
+            <td>&nbsp;</td>
+            <td><input id="txtContactSubject" type="text" /></td>
+        </tr>
+        <tr>
+            <td>Message</td>
+            <td>&nbsp;</td>
+            <td><input id="txtContactBody" type="text" /></td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <input id="btnContactSendEmail" type="button" value="Send" />
+            </td>
+        </tr>
+    </table>
+</div>
+
+<h2>Contact.</h2>
+<h3>bPrep.net Contacts</h3>
+
+<address>
+    >
+    @{
+        const string adminBprepNet = "admin" + "@" + "bPrep.net";
+    }
+    <strong>Support:</strong>   <a id="lnkAdminEmail">@adminBprepNet</a>
+</address>
+
+<script language="javascript">
+    $(document).ready(function () {
+        $("#winSendEmail").dialog();
+        $("#winSendEmail").dialog('close');
+
+        $("#lnkAdminEmail").click(function () {
+            $("#winSendEmail").dialog('open');
+        });
+
+        $("#btnContactSendEmail").click(function () {
+            var subject = $("#txtContactSubject").val();
+            var body = $("#txtContactBody").val();
+            var from = '';
+            debugger;
+            if ($("#hdEmailAddress").val() != '') {
+                from = $("#hdEmailAddress").val();
+            } else {
+                from = $("#txtContactFrom").val();
+            }
+            if (subject.trim().length == 0) {
+                alert('Please enter a subject');
+                return;
+            }
+            if (body.trim().length == 0) {
+                alert('Please enter a message');
+                return;
+            }
+            if (from.trim().length == 0) {
+                alert('Please enter a from address');
+                return;
+            }
+
+            $.ajax({
+                url: "/Home/SendEmailToBPrep",
+                    data: { from: from, subject: subject, body: body },
+                    cache: false
+                })
+                .done(function (data) {
+                    $("#txtContactSubject").val('');
+                    $("#txtContactBody").val('');
+                    $("#winSendEmail").dialog('close');
+                });
+        });
+    })
+</script>

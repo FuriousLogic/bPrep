@@ -1,0 +1,411 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BP_Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="BP_ModelStoreContainer">
+    <EntitySet Name="Preppers" EntityType="BP_Model.Store.Preppers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Kits" EntityType="BP_Model.Store.Kits" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Items" EntityType="BP_Model.Store.Items" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ItemStatus" EntityType="BP_Model.Store.ItemStatus" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SampleKits" EntityType="BP_Model.Store.SampleKits" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SampleItems" EntityType="BP_Model.Store.SampleItems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Parameters" EntityType="BP_Model.Store.Parameters" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="PrepperKit" Association="BP_Model.Store.PrepperKit">
+      <End Role="Prepper" EntitySet="Preppers" />
+      <End Role="Kit" EntitySet="Kits" />
+    </AssociationSet>
+    <AssociationSet Name="KitItem" Association="BP_Model.Store.KitItem">
+      <End Role="Kit" EntitySet="Kits" />
+      <End Role="Item" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="ItemStatusItem" Association="BP_Model.Store.ItemStatusItem">
+      <End Role="ItemStatus" EntitySet="ItemStatus" />
+      <End Role="Item" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="SampleKitSampleItem" Association="BP_Model.Store.SampleKitSampleItem">
+      <End Role="SampleKit" EntitySet="SampleKits" />
+      <End Role="SampleItem" EntitySet="SampleItems" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Preppers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ConfirmationRequestSent" Type="datetime" Nullable="false" />
+    <Property Name="ConfirmationGuid" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ShowTipKit" Type="bit" Nullable="false" />
+    <Property Name="ShowTipKitItems" Type="bit" Nullable="false" />
+    <Property Name="UnsubscribeGuid" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Kits">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PrepperId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Items">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ReplaceBy" Type="datetime" Nullable="true" />
+    <Property Name="DaysWarningOfReplacement" Type="int" Nullable="false" />
+    <Property Name="KitId" Type="int" Nullable="false" />
+    <Property Name="ItemStatusId" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="SampleItemId" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ItemStatus">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SampleKits">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SampleItems">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="SampleKitId" Type="int" Nullable="false" />
+    <Property Name="DaysShelfLife" Type="int" Nullable="false" />
+    <Property Name="DaysWarningOfReplacement" Type="int" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AmazonWidget" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Parameters">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="PrepperKit">
+    <End Role="Prepper" Type="BP_Model.Store.Preppers" Multiplicity="1" />
+    <End Role="Kit" Type="BP_Model.Store.Kits" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Prepper">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Kit">
+        <PropertyRef Name="PrepperId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="KitItem">
+    <End Role="Kit" Type="BP_Model.Store.Kits" Multiplicity="1" />
+    <End Role="Item" Type="BP_Model.Store.Items" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kit">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="KitId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ItemStatusItem">
+    <End Role="ItemStatus" Type="BP_Model.Store.ItemStatus" Multiplicity="1" />
+    <End Role="Item" Type="BP_Model.Store.Items" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ItemStatus">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="ItemStatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SampleKitSampleItem">
+    <End Role="SampleKit" Type="BP_Model.Store.SampleKits" Multiplicity="1" />
+    <End Role="SampleItem" Type="BP_Model.Store.SampleItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SampleKit">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SampleItem">
+        <PropertyRef Name="SampleKitId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="BP_Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="BP_ModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Preppers" EntityType="BP_Model.Prepper" />
+          <EntitySet Name="Kits" EntityType="BP_Model.Kit" />
+          <EntitySet Name="Items" EntityType="BP_Model.Item" />
+          <AssociationSet Name="PrepperKit" Association="BP_Model.PrepperKit">
+            <End Role="Prepper" EntitySet="Preppers" />
+            <End Role="Kit" EntitySet="Kits" />
+          </AssociationSet>
+          <AssociationSet Name="KitItem" Association="BP_Model.KitItem">
+            <End Role="Kit" EntitySet="Kits" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <EntitySet Name="ItemStatus" EntityType="BP_Model.ItemStatus" />
+          <AssociationSet Name="ItemStatusItem" Association="BP_Model.ItemStatusItem">
+            <End Role="ItemStatus" EntitySet="ItemStatus" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <EntitySet Name="SampleKits" EntityType="BP_Model.SampleKit" />
+          <EntitySet Name="SampleItems" EntityType="BP_Model.SampleItem" />
+          <AssociationSet Name="SampleKitSampleItem" Association="BP_Model.SampleKitSampleItem">
+            <End Role="SampleKit" EntitySet="SampleKits" />
+            <End Role="SampleItem" EntitySet="SampleItems" />
+          </AssociationSet>
+          <EntitySet Name="Parameters" EntityType="BP_Model.Parameter" />
+        </EntityContainer>
+        <EntityType Name="Prepper">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="Kits" Relationship="BP_Model.PrepperKit" FromRole="Prepper" ToRole="Kit" />
+          <Property Name="Email" Type="String" Nullable="false" />
+          <Property Name="ConfirmationRequestSent" Type="DateTime" Nullable="false" />
+          <Property Name="ConfirmationGuid" Type="String" Nullable="true" />
+          <Property Name="ShowTipKit" Type="Boolean" Nullable="false" />
+          <Property Name="ShowTipKitItems" Type="Boolean" Nullable="false" />
+          <Property Name="UnsubscribeGuid" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Kit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Location" Type="String" Nullable="false" />
+          <NavigationProperty Name="Prepper" Relationship="BP_Model.PrepperKit" FromRole="Kit" ToRole="Prepper" />
+          <Property Name="PrepperId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Items" Relationship="BP_Model.KitItem" FromRole="Kit" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="ReplaceBy" Type="DateTime" Nullable="true" />
+          <Property Name="DaysWarningOfReplacement" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Kit" Relationship="BP_Model.KitItem" FromRole="Item" ToRole="Kit" />
+          <Property Name="KitId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ItemStatus" Relationship="BP_Model.ItemStatusItem" FromRole="Item" ToRole="ItemStatus" />
+          <Property Name="ItemStatusId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="SampleItemId" Type="Int32" Nullable="true" />
+        </EntityType>
+        <Association Name="PrepperKit">
+          <End Type="BP_Model.Prepper" Role="Prepper" Multiplicity="1" />
+          <End Type="BP_Model.Kit" Role="Kit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prepper">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Kit">
+              <PropertyRef Name="PrepperId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="KitItem">
+          <End Type="BP_Model.Kit" Role="Kit" Multiplicity="1" />
+          <End Type="BP_Model.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="KitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ItemStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Items" Relationship="BP_Model.ItemStatusItem" FromRole="ItemStatus" ToRole="Item" />
+          <Property Name="Name" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="ItemStatusItem">
+          <End Type="BP_Model.ItemStatus" Role="ItemStatus" Multiplicity="1" />
+          <End Type="BP_Model.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="ItemStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SampleKit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="SampleItems" Relationship="BP_Model.SampleKitSampleItem" FromRole="SampleKit" ToRole="SampleItem" />
+          <Property Name="Name" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SampleItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SampleKit" Relationship="BP_Model.SampleKitSampleItem" FromRole="SampleItem" ToRole="SampleKit" />
+          <Property Name="SampleKitId" Type="Int32" Nullable="false" />
+          <Property Name="DaysShelfLife" Type="Int32" Nullable="false" />
+          <Property Name="DaysWarningOfReplacement" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <Property Name="AmazonWidget" Type="String" Nullable="true" />
+        </EntityType>
+        <Association Name="SampleKitSampleItem">
+          <End Type="BP_Model.SampleKit" Role="SampleKit" Multiplicity="1" />
+          <End Type="BP_Model.SampleItem" Role="SampleItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SampleKit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SampleItem">
+              <PropertyRef Name="SampleKitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Parameter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Value" Type="String" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BP_ModelStoreContainer" CdmEntityContainer="BP_ModelContainer">
+    <EntitySetMapping Name="Preppers">
+      <EntityTypeMapping TypeName="IsTypeOf(BP_Model.Prepper)">
+        <MappingFragment StoreEntitySet="Preppers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="ConfirmationRequestSent" ColumnName="ConfirmationRequestSent" />
+          <ScalarProperty Name="ConfirmationGuid" ColumnName="ConfirmationGuid" />
+          <ScalarProperty Name="ShowTipKit" ColumnName="ShowTipKit" />
+          <ScalarProperty Name="ShowTipKitItems" ColumnName="ShowTipKitItems" />
+          <ScalarProperty Name="UnsubscribeGuid" ColumnName="UnsubscribeGuid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Kits">
+      <EntityTypeMapping TypeName="IsTypeOf(BP_Model.Kit)">
+        <MappingFragment StoreEntitySet="Kits">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="PrepperId" ColumnName="PrepperId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Items">
+      <EntityTypeMapping TypeName="IsTypeOf(BP_Model.Item)">
+        <MappingFragment StoreEntitySet="Items">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ReplaceBy" ColumnName="ReplaceBy" />
+          <ScalarProperty Name="DaysWarningOfReplacement" ColumnName="DaysWarningOfReplacement" />
+          <ScalarProperty Name="KitId" ColumnName="KitId" />
+          <ScalarProperty Name="ItemStatusId" ColumnName="ItemStatusId" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="SampleItemId" ColumnName="SampleItemId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ItemStatus">
+      <EntityTypeMapping TypeName="IsTypeOf(BP_Model.ItemStatus)">
+        <MappingFragment StoreEntitySet="ItemStatus">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SampleKits">
+      <EntityTypeMapping TypeName="IsTypeOf(BP_Model.SampleKit)">
+        <MappingFragment StoreEntitySet="SampleKits">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SampleItems">
+      <EntityTypeMapping TypeName="IsTypeOf(BP_Model.SampleItem)">
+        <MappingFragment StoreEntitySet="SampleItems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="SampleKitId" ColumnName="SampleKitId" />
+          <ScalarProperty Name="DaysShelfLife" ColumnName="DaysShelfLife" />
+          <ScalarProperty Name="DaysWarningOfReplacement" ColumnName="DaysWarningOfReplacement" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="AmazonWidget" ColumnName="AmazonWidget" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Parameters">
+      <EntityTypeMapping TypeName="IsTypeOf(BP_Model.Parameter)">
+        <MappingFragment StoreEntitySet="Parameters">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

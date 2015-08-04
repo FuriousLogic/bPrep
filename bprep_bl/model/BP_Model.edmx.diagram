@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c5bec082c3494028b7b92909e84bfd3c" Name="Diagram1" >
+        <EntityTypeShape EntityType="BP_Model.Prepper" Width="2" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="BP_Model.Kit" Width="1.5" PointX="3.375" PointY="0.5" />
+        <EntityTypeShape EntityType="BP_Model.Item" Width="2.125" PointX="6" PointY="0.5" />
+        <AssociationConnector Association="BP_Model.PrepperKit" />
+        <AssociationConnector Association="BP_Model.KitItem" />
+        <EntityTypeShape EntityType="BP_Model.ItemStatus" Width="1.5" PointX="8.75" PointY="0.5" />
+        <AssociationConnector Association="BP_Model.ItemStatusItem" />
+        <EntityTypeShape EntityType="BP_Model.SampleKit" Width="1.5" PointX="0.75" PointY="3.375" />
+        <EntityTypeShape EntityType="BP_Model.SampleItem" Width="2.25" PointX="3" PointY="3" />
+        <AssociationConnector Association="BP_Model.SampleKitSampleItem" />
+        <EntityTypeShape EntityType="BP_Model.Parameter" Width="1.5" PointX="6.125" PointY="3.875" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

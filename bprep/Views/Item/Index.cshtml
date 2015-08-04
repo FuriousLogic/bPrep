@@ -1,0 +1,190 @@
+﻿@using Microsoft.Ajax.Utilities
+@model BPrep_BL.Model.Prepper
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.ShowTipKitItems)
+{
+    <div id="winExplaination" title="Your Kit Items page">
+        <p>This page shows a list of items in the selected kit</p>
+        <p>Each items shoes its current state from 'Planned' to 'Positioned'.  To change this just click on the new status</p>
+        <p>To edit or delete an item select the relevant link on that item row</p>
+        <input id="btnDontShowAgain" type="button" value="Don't show this again" />
+    </div>
+}
+
+<div id="winEdit" title="Edit Item">
+    <input id="hdItemId" type="hidden" />
+    <h3 id="winItemName"></h3>
+    <label for="spQuantity">Quantity</label>
+    <input id="spQuantity" name="value" />
+    <label for="dtReplaceBy">Replace By</label>
+    <input type="text" id="dtReplaceBy" />
+    <label for="spDaysWarning">Days Warning</label>
+    <input id="spDaysWarning" name="value" />
+    <input id="btnSaveItem" value="Save" type="button" onclick="btnSaveItem_Click()" />
+</div>
+
+<table>
+    <tr>
+        <td>
+            <table>
+                <tr>
+                    <td>
+                        <h2>@ViewBag.Kit.Name</h2>
+
+                        <table class="table" id="tblItems">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Quantity</th>
+                                    <th>Replace By</th>
+                                    <th>Days Warning of Replacement</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </td>
+                    <td id="ads"><div id="divAds"></div></td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            <table>
+                @foreach (string ad in ViewBag.Ads)
+                {
+                    <tr>
+                        <td>
+                            @Html.Raw(ad)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </td>
+    </tr>
+</table>
+
+
+
+
+<script language="javascript">
+    $(document).ready(function () {
+        //EditItem Window
+        $("#winEdit").dialog();
+        $("#winEdit").dialog('close');
+
+        //Edit Quantity
+        $("#spQuantity").spinner();
+        $("#spQuantity").width(30);
+
+        //Edit Replace By Date
+        $("#dtReplaceBy").datepicker();
+
+        //Edit Days Warning
+        $("#spDaysWarning").spinner();
+
+        //Explaination dialog
+        $("#winExplaination").dialog();
+        $("#btnDontShowAgain").click(function() {
+            $.ajax({
+                url: "/Item/DontShowKitItemTipAgain",
+                //data: { xxx: "xxx" },
+                cache: false
+            })
+            .done(function (data) {
+                $("#winExplaination").dialog('close');
+            });
+        });
+        
+        populateForm();
+    });
+
+    function btnSaveItem_Click() {
+        var itemId = $("#hdItemId").val();
+        var quantity = $("#spQuantity").spinner().spinner("value");
+        var daysWarning = $("#spDaysWarning").spinner().spinner("value");
+        var replaceBy = $("#dtReplaceBy").datepicker('getDate');
+        var year = 0;
+        var month = 0;
+        var day = 0;
+        if(replaceBy != null){
+            year = replaceBy.getUTCFullYear();
+            month = replaceBy.getUTCMonth() + 1;
+            day = replaceBy.getUTCDate();
+        }
+
+        $.ajax({
+            url: "/Item/UpdateItem",
+            data:{itemId: itemId, quantity: quantity, daysWarning: daysWarning, replaceByYear: year, replaceByMonth: month, replaceByDay: day},
+            cache: false
+        }).done(function() {
+            populateForm();
+            $("#winEdit").dialog('close');
+        });
+    }
+
+    function populateForm() {
+        $.ajax({
+            url: "/Item/GetItems",
+            data:{kitId: @ViewBag.Kit.Id},
+            cache: false
+        })
+            .done(function(data) {
+                $("table#tblItems tbody").html(data);
+            });
+    }
+
+    function ChangeStatus(itemId, statusId) {
+        $.ajax({
+            url: "/Item/ChangeStatus",
+            data:{itemId: itemId, statusId: statusId},
+            cache: false
+        })
+        .done(function (data) { populateForm(); });
+    }
+
+    function EditItem(itemId, itemName, quantity, replaceBy, daysWarning) {
+        //Show or hide Replace By
+        if (replaceBy == 0) {
+            $("#dtReplaceBy").datepicker("destroy");
+            $("#dtReplaceBy").hide();
+        } else {
+            $( "#dtReplaceBy" ).show();
+            $( "#dtReplaceBy" ).datepicker();
+            var year =parseInt(replaceBy.toString().substring(0, 4));
+            var month = parseInt(replaceBy.toString().substring(4, 6));
+            var day = parseInt(replaceBy.toString().substring(6));
+
+            //Month is zero delimited for some reason...
+            var date = new Date(year, month-1, day);
+            $('#dtReplaceBy').datepicker("setDate", date);
+        }
+
+        $("#hdItemId").val(itemId);
+        $("#winItemName").html(itemName);
+        $("#spQuantity").val(quantity);
+        $("#spDaysWarning").val(daysWarning);
+        $("#winEdit").dialog('open');
+    }
+
+    function DeleteItem(itemId, itemName) {
+        var r = confirm('Delete [' + itemName + ']');
+        if (!r) {
+            alert('Delete Aborted');
+            return;
+        }
+
+        $.ajax({
+            url: "/Item/DeleteItem",
+            data:{itemId: itemId},
+            cache: false
+        })
+        .done(function (data) { populateForm(); });
+    }
+
+</script>
