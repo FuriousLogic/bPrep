@@ -9,80 +9,87 @@
             <tr><td colspan="3"><input id="btnBtSubmit" type="button" value="Submit &raquo;"/></td></tr>
         </table>
     </div>*@
-<div id="divGettingStarted" title="Getting Started">
-    <p>This site is all about lists.  Kit lists.</p>
-    <p>You need to start by going to the 'Kit' page and create some Kits, each kit will consist of a list of items.</p>
-    <p>If you're not logged in the system will get you to login (otherwise it won't know which kits are yours)</p>
-    <p>If you don't have a login yet then Register as a new user.  It costs nothing and we'll never pass your details on.</p>
-</div>
-<div id="divVersions" title="Versions">
-    <p class="VwVersionNumber">v1.0.2.1</p>
-    <ul>
-        <li class="VwVersionDetail">Fix - Various small bug fixes</li>
-    </ul>
-    <p class="VwVersionNumber">v1.0.2.0</p>
-    <ul>
-        <li class="VwVersionDetail">Enh - Unsubscribe option in weekly emails</li>
-    </ul>
-    <p class="VwVersionNumber">v1.0.1.1</p>
-    <ul>
-        <li class="VwVersionDetail">Enh - Daily emails only sent if something to report</li>
-        <li class="VwVersionDetail">Various small enhancements and fixes</li>
-    </ul>
-    <p class="VwVersionNumber">v1.0.1.0</p>
-    <ul>
-        <li class="VwVersionDetail">Enh - Version shown with drill down info</li>
-        <li class="VwVersionDetail">Enh - Contacts form</li>
-        <li class="VwVersionDetail">Various small enhancements and fixes</li>
-    </ul>
-    <p class="VwVersionNumber">v1.0.0.0</p>
-    <ul>
-        <li class="VwVersionDetail">Initial release</li>
-    </ul>
-</div>
-
-@{
-    ViewBag.Title = "Home Page";
-}
-
-@{
-    var fullVersionNumber = "v" + ViewBag.VersionNumber;
-}
-<div class="jumbotron">
-    <h1>bPrep.net</h1>
-    <p class="lead">Helping you to prepare for the unexpected.</p>
-    <div id="btnGettingStarted" class="btn btn-primary">Getting Started &raquo;</div>
-   <div class="VersionNumber" id="divVersionNumber">@fullVersionNumber</div>
-</div>
-
 <div class="row">
-    <div class="col-md-4">
-        <h2>Laid Back Prepper (LBP)</h2>
-        <p>
-            Having a simple plan in place along with a few well selected supplies can make life much easier
-            for everyone when the unexpected happens.
-        </p>
-        <p><a class="btn btn-default" href="/Home/LBP">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>The Get Home Bag (GHB)</h2>
-        <p>
-            A Get Home Bag is a handle collection of useful items to help get you get back to base if things go awry.
-            One in the car boot, a different one in the bottom drawer at work etc.
-        </p>
-        <p><a class="btn btn-default" href="/Home/GHB/">Learn more &raquo;</a></p>
-    </div>
-    @*<div class="col-md-4">
-            <h2>Stores</h2>
-            <p>
-                Knowing that you have food, water & cooking facilities available to see you through for up to a week.
-                We've seen panic buys in the UK for no good reason.  Knowing that you can sit back & let it blow over is
-                pretty damn cool
-            </p>
-            <p><a class="btn btn-default" href="/Home/Stores">Learn more &raquo;</a></p>
-        </div>*@
-</div>
+        <div id="divGettingStarted" title="Getting Started">
+            <p>This site is all about lists. Kit lists.</p>
+            <p>You need to start by going to the 'Kit' page and create some Kits, each kit will consist of a list of items.</p>
+            <p>If you're not logged in the system will get you to login (otherwise it won't know which kits are yours)</p>
+            <p>If you don't have a login yet then Register as a new user. It costs nothing and we'll never pass your details on.</p>
+        </div>
+        <div id="divVersions" title="Versions">
+            <p class="VwVersionNumber">v1.0.2.1</p>
+            <ul>
+                <li class="VwVersionDetail">Fix - Various small bug fixes</li>
+            </ul>
+            <p class="VwVersionNumber">v1.0.2.0</p>
+            <ul>
+                <li class="VwVersionDetail">Enh - Unsubscribe option in weekly emails</li>
+            </ul>
+            <p class="VwVersionNumber">v1.0.1.1</p>
+            <ul>
+                <li class="VwVersionDetail">Enh - Daily emails only sent if something to report</li>
+                <li class="VwVersionDetail">Various small enhancements and fixes</li>
+            </ul>
+            <p class="VwVersionNumber">v1.0.1.0</p>
+            <ul>
+                <li class="VwVersionDetail">Enh - Version shown with drill down info</li>
+                <li class="VwVersionDetail">Enh - Contacts form</li>
+                <li class="VwVersionDetail">Various small enhancements and fixes</li>
+            </ul>
+            <p class="VwVersionNumber">v1.0.0.0</p>
+            <ul>
+                <li class="VwVersionDetail">Initial release</li>
+            </ul>
+        </div>
 
+        @{
+            ViewBag.Title = "Home Page";
+        }
+
+        @{
+            var fullVersionNumber = "v" + ViewBag.VersionNumber;
+        }
+        <div class="jumbotron">
+            <h1>bPrep.net</h1>
+            <p class="lead">Helping you to prepare for the unexpected.</p>
+            <div id="btnGettingStarted" class="btn btn-primary">Getting Started &raquo;</div>
+            <div class="VersionNumber" id="divVersionNumber">@fullVersionNumber</div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row homeIndexText">
+                <div class="col-md-6">
+                    <h2>Laid Back Prepper (LBP)</h2>
+                    <p>
+                        Having a simple plan in place along with a few well selected supplies can make life much easier
+                        for everyone when the unexpected happens.
+                    </p>
+                    <p>
+                        <a class="btn btn-default" href="/Home/LBP">Learn more &raquo;</a>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h2>The Get Home Bag (GHB)</h2>
+                    <p>
+                        A Get Home Bag is a handle collection of useful items to help get you get back to base if things go awry.
+                        One in the car boot, a different one in the bottom drawer at work etc.
+                    </p>
+                    <p>
+                        <a class="btn btn-default" href="/Home/GHB/">Learn more &raquo;</a>
+                    </p>
+                </div>
+                @*<div class="col-md-4">
+                    <h2>Stores</h2>
+                    <p>
+                        Knowing that you have food, water & cooking facilities available to see you through for up to a week.
+                        We've seen panic buys in the UK for no good reason.  Knowing that you can sit back & let it blow over is
+                        pretty damn cool
+                    </p>
+                    <p><a class="btn btn-default" href="/Home/Stores">Learn more &raquo;</a></p>
+                </div>*@
+            </div>
+        </div>
+</div>
 <script language="javascript">
     $(document).ready(function () {
         //$("#dialog").dialog();

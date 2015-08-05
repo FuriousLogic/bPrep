@@ -9,10 +9,11 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
     @Styles.Render("~/Content/themes/base/css")
+    <script src="~/Scripts/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -32,25 +33,17 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
+<div class="container-fluid body-content">
+    <div class="fill-screen" style="background-image: url(../../Images/Desert.jpg)">
         @RenderBody()
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - bPrep</p>
         </footer>
     </div>
+</div>
 
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- bPrep Left Banner -->
-    <ins class="adsbygoogle"
-         style="display:inline-block;width:300px;height:600px"
-         data-ad-client="ca-pub-1743099204773472"
-         data-ad-slot="2445572943"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
 </body>
 </html>

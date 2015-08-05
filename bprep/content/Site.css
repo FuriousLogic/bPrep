@@ -21,6 +21,20 @@ textarea {
     color: #b94a48;
 }
 
+.homeIndexText {
+    color: white;
+}
+
+.jumbotron {
+    opacity: 0.7;
+}
+
+.fill-screen {
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
 .field-validation-valid {
     display: none;
 }
